@@ -119,14 +119,6 @@ dotnet run
 5. **Navigate to the app**
 Open your browser to `http://localhost:5000`
 
-## 🧪 Testing My Cart Feature
-
-To verify the shopping cart functionality:
-
-```bash
-# Run unit tests for cart feature
-dotnet test tests/MusicStore.Tests/ --filter "Team=ShoppingCart"
-```
 
 ### Manual Testing Flow:
 1. Browse to `/Store/Browse` and view albums
