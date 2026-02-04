@@ -1,0 +1,196 @@
+@model MusicStore.Models.Cart
+@{
+    ViewData["Title"] = "Your Shopping Cart";
+}
+
+<h1>Your Shopping Cart</h1>
+
+@if (TempData["SuccessMessage"] != null)
+{
+    <div class="alert alert-success">
+        @TempData["SuccessMessage"]
+    </div>
+}
+
+@if (Model.CartItems == null || !Model.CartItems.Any())
+{
+    <div class="empty-cart">
+        <h2>Your cart is empty</h2>
+        <p>Browse our catalog to add albums to your cart.</p>
+        <a href="/Store/Browse" class="btn btn-primary">Continue Shopping</a>
+    </div>
+}
+else
+{
+    <div class="cart-container">
+        @foreach (var item in Model.CartItems)
+        {
+            <div class="cart-item">
+                <div class="cart-item-image">
+                    @if (!string.IsNullOrEmpty(item.Album.AlbumArtUrl))
+                    {
+                        <img src="@item.Album.AlbumArtUrl" alt="@item.Album.Title" width="100" />
+                    }
+                </div>
+                
+                <div class="cart-item-details">
+                    <h3>@item.Album.Title</h3>
+                    <p>by @item.Album.Artist.Name</p>
+                    <p>Price: $@item.Album.Price each</p>
+                </div>
+
+                <div class="cart-item-quantity">
+                    <p>Quantity:</p>
+                    <div class="quantity-controls">
+                        <a href="/Cart/Update/@item.CartItemId?quantity=@(item.Quantity - 1)" class="btn btn-sm btn-secondary">-</a>
+                        <span class="quantity-display">@item.Quantity</span>
+                        <a href="/Cart/Update/@item.CartItemId?quantity=@(item.Quantity + 1)" class="btn btn-sm btn-secondary">+</a>
+                    </div>
+                </div>
+
+                <div class="cart-item-total">
+                    <p>Item Total:</p>
+                    <p class="item-total-price">$@((item.Album.Price * item.Quantity).ToString("F2"))</p>
+                </div>
+
+                <div class="cart-item-remove">
+                    <a href="/Cart/Remove/@item.CartItemId" class="btn btn-danger btn-sm" onclick="return confirm('Are you sure you want to remove this item?');">Remove</a>
+                </div>
+            </div>
+        }
+
+        <hr />
+
+        <div class="cart-summary">
+            <h2>Cart Summary</h2>
+            @{
+                var subtotal = Model.CartItems.Sum(ci => ci.Album.Price * ci.Quantity);
+                var totalItems = Model.CartItems.Sum(ci => ci.Quantity);
+            }
+            <p>Subtotal: <strong>$@subtotal.ToString("F2")</strong></p>
+            <p>Items: <strong>@totalItems</strong></p>
+        </div>
+
+        <div class="cart-actions">
+            <a href="/Store/Browse" class="btn btn-secondary">Continue Shopping</a>
+            <a href="/Checkout" class="btn btn-primary">Proceed to Checkout</a>
+        </div>
+    </div>
+}
+
+<style>
+    .cart-container {
+        max-width: 1000px;
+        margin: 0 auto;
+    }
+
+    .cart-item {
+        display: flex;
+        align-items: center;
+        padding: 20px;
+        border: 1px solid #ddd;
+        margin-bottom: 15px;
+        border-radius: 5px;
+        background-color: #fff;
+    }
+
+    .cart-item-image {
+        margin-right: 20px;
+    }
+
+    .cart-item-image img {
+        border-radius: 5px;
+    }
+
+    .cart-item-details {
+        flex: 1;
+    }
+
+    .cart-item-details h3 {
+        margin: 0 0 10px 0;
+        font-size: 1.2em;
+    }
+
+    .cart-item-details p {
+        margin: 5px 0;
+        color: #666;
+    }
+
+    .cart-item-quantity {
+        margin: 0 20px;
+        text-align: center;
+    }
+
+    .quantity-controls {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        margin-top: 10px;
+    }
+
+    .quantity-display {
+        padding: 5px 15px;
+        border: 1px solid #ddd;
+        border-radius: 3px;
+        min-width: 40px;
+        text-align: center;
+    }
+
+    .cart-item-total {
+        margin: 0 20px;
+        text-align: right;
+    }
+
+    .item-total-price {
+        font-size: 1.2em;
+        font-weight: bold;
+        color: #333;
+    }
+
+    .cart-item-remove {
+        margin-left: 10px;
+    }
+
+    .cart-summary {
+        background-color: #f8f9fa;
+        padding: 20px;
+        border-radius: 5px;
+        margin: 20px 0;
+        text-align: right;
+    }
+
+    .cart-summary h2 {
+        font-size: 1.5em;
+        margin-bottom: 15px;
+    }
+
+    .cart-summary p {
+        font-size: 1.1em;
+        margin: 10px 0;
+    }
+
+    .cart-actions {
+        display: flex;
+        justify-content: space-between;
+        margin-top: 20px;
+    }
+
+    .empty-cart {
+        text-align: center;
+        padding: 50px;
+    }
+
+    .empty-cart h2 {
+        color: #666;
+        margin-bottom: 20px;
+    }
+
+    .alert-success {
+        padding: 15px;
+        margin-bottom: 20px;
+        border: 1px solid #d4edda;
+        border-radius: 4px;
+        color: #155724;
+        background-color: #d4edda;
+    }
+</style>

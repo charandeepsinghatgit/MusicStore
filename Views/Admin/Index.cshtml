@@ -1,0 +1,27 @@
+@model MusicStore.ViewModels.AdminDashboardViewModel
+@{
+    ViewData["Title"] = "Admin Dashboard";
+}
+
+<h1>Admin Dashboard</h1>
+
+<h2>Store Statistics</h2>
+<p>Total Orders: @Model.TotalOrders</p>
+<p>Total Revenue: $@Model.TotalRevenue</p>
+<p>Pending Orders: @Model.PendingOrders</p>
+<p>Total Customers: @Model.TotalCustomers</p>
+
+<h2>Recent Orders</h2>
+<ul>
+@foreach (var o in Model.RecentOrders)
+{
+    <li>
+        Order - #@o.OrderNumber - @o.CustomerName - $@o.TotalAmount
+    </li>
+}
+</ul>
+
+<h2>Quick Actions</h2>
+<p><a href="/Admin/Orders">View All Orders</a></p>
+<p><a href="/Admin/Orders?status=Pending">Pending Orders</a></p>
+<p><a href="/Store/Browse">View Store</a></p>

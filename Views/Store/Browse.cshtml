@@ -1,0 +1,39 @@
+@model List<MusicStore.Models.Album>
+
+<h2>@ViewBag.Title</h2>
+
+<form method="get" class="filters">
+    <select name="artist">
+        <option value="">All Artists</option>
+        @foreach (var a in ViewBag.Artists)
+        {
+            <option value="@a.Name">@a.Name</option>
+        }
+    </select>
+
+    <select name="genre">
+        <option value="">All Genres</option>
+        @foreach (var g in ViewBag.Genres)
+        {
+            <option value="@g.Name">@g.Name</option>
+        }
+    </select>
+
+    <input type="text" name="search" placeholder="Search for an album title" />
+
+    <button type="submit">Filter</button>
+    <a href="/Store/Browse">Clear Filters</a>
+</form>
+
+<hr />
+
+@foreach (var album in Model)
+{
+    <div class="album-card">
+        <h3>@album.Title</h3>
+        <p>by <strong>@album.Artist.Name</strong></p>
+        <p>Genre: @album.Genre.Name</p>
+        <p>Price: $@album.Price</p>
+        <a href="/Store/Details/@album.AlbumId">View Details</a>
+    </div>
+}

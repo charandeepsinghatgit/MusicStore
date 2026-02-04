@@ -1,0 +1,43 @@
+@model MusicStore.Models.Order
+@{
+    ViewData["Title"] = "Order Details";
+}
+
+<h1>Order #@Model.OrderNumber Details</h1>
+
+<h2>Customer Information</h2>
+<p>Name: @Model.CustomerName</p>
+<p>Email: @Model.CustomerEmail</p>
+<p>Order Date: @Model.OrderDate</p>
+<p>Status: @Model.Status</p>
+
+<h2>Order Items</h2>
+<ul>
+@if (Model.OrderDetails != null)
+{
+    foreach (var item in Model.OrderDetails)
+    {
+        <li>
+            @item.Album.Title by @item.Album.Artist.Name - Qty: @item.Quantity - Price: $@item.UnitPrice
+        </li>
+    }
+}
+</ul>
+
+<h2>Order Summary</h2>
+
+@{
+    decimal subtotal = 0;
+    if (Model.OrderDetails != null)
+    {
+        foreach (var d in Model.OrderDetails)
+        {
+            subtotal += d.UnitPrice * d.Quantity;
+        }
+    }
+}
+
+<p>Subtotal: $@subtotal</p>
+<p>Order Total: $@Model.TotalAmount</p>
+
+<p><a href="/Admin/Orders">Back to Orders</a></p>

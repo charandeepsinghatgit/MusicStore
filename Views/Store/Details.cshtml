@@ -1,0 +1,171 @@
+@model MusicStore.Models.Album
+@{
+    ViewData["Title"] = Model.Title;
+}
+
+<div class="album-details-container">
+    <div class="album-header">
+        <h1>@Model.Title</h1>
+    </div>
+
+    <div class="album-content">
+        <div class="album-image">
+            @if (!string.IsNullOrEmpty(Model.AlbumArtUrl))
+            {
+                <img src="@Model.AlbumArtUrl" alt="@Model.Title" width="300" />
+            }
+        </div>
+
+        <div class="album-info">
+            <h3>Album Information:</h3>
+            <ul>
+                <li><strong>Artist:</strong> @Model.Artist.Name</li>
+                <li><strong>Genre:</strong> @Model.Genre.Name</li>
+                <li><strong>Release Year:</strong> @Model.ReleaseYear</li>
+                <li><strong>Price:</strong> $@Model.Price</li>
+                <li><strong>Rating:</strong> @Model.Rating / 5</li>
+            </ul>
+
+            <div class="album-actions">
+                <a href="/Cart/Add/@Model.AlbumId" class="btn btn-primary btn-lg">Add to Cart</a>
+                <a href="/Store/Browse" class="btn btn-secondary">Back to Catalog</a>
+            </div>
+        </div>
+    </div>
+
+    <div class="track-list">
+        <h3>Track List</h3>
+        @if (Model.Tracks != null && Model.Tracks.Any())
+        {
+            <ol>
+                @foreach (var track in Model.Tracks.OrderBy(t => t.TrackNumber))
+                {
+                    <li>@track.Title (@track.Duration)</li>
+                }
+            </ol>
+        }
+        else
+        {
+            <p>No tracks available</p>
+        }
+    </div>
+</div>
+
+<style>
+    .album-details-container {
+        max-width: 1000px;
+        margin: 0 auto;
+        padding: 20px;
+    }
+
+    .album-header h1 {
+        font-size: 2.5em;
+        margin-bottom: 30px;
+        color: #333;
+    }
+
+    .album-content {
+        display: flex;
+        gap: 40px;
+        margin-bottom: 40px;
+    }
+
+    .album-image img {
+        border-radius: 10px;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    }
+
+    .album-info {
+        flex: 1;
+    }
+
+    .album-info h3 {
+        font-size: 1.5em;
+        margin-bottom: 15px;
+        color: #333;
+    }
+
+    .album-info ul {
+        list-style: none;
+        padding: 0;
+        margin-bottom: 30px;
+    }
+
+    .album-info ul li {
+        padding: 10px 0;
+        border-bottom: 1px solid #eee;
+        font-size: 1.1em;
+    }
+
+    .album-actions {
+        display: flex;
+        gap: 15px;
+        margin-top: 20px;
+    }
+
+    .track-list {
+        background-color: #f8f9fa;
+        padding: 20px;
+        border-radius: 5px;
+    }
+
+    .track-list h3 {
+        font-size: 1.5em;
+        margin-bottom: 15px;
+        color: #333;
+    }
+
+    .track-list ol {
+        padding-left: 20px;
+    }
+
+    .track-list ol li {
+        padding: 8px 0;
+        font-size: 1.05em;
+    }
+
+    .btn {
+        padding: 12px 30px;
+        text-decoration: none;
+        border-radius: 5px;
+        font-size: 1.1em;
+        display: inline-block;
+        text-align: center;
+        border: none;
+        cursor: pointer;
+    }
+
+    .btn-primary {
+        background-color: #007bff;
+        color: white;
+    }
+
+    .btn-primary:hover {
+        background-color: #0056b3;
+    }
+
+    .btn-secondary {
+        background-color: #6c757d;
+        color: white;
+    }
+
+    .btn-secondary:hover {
+        background-color: #545b62;
+    }
+
+    .btn-lg {
+        font-size: 1.2em;
+        padding: 15px 40px;
+    }
+
+    @@media (max-width: 768px) {
+        .album-content {
+            flex-direction: column;
+        }
+
+        .album-image img {
+            width: 100%;
+            max-width: 300px;
+        }
+    }
+</style>

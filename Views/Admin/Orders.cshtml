@@ -1,0 +1,31 @@
+@model IEnumerable<MusicStore.Models.Order>
+@{
+    ViewData["Title"] = "Order Management";
+}
+
+<h1>Order Management</h1>
+
+<h2>Filter Orders:</h2>
+<form method="get">
+    <p>Status:</p>
+    <select name="status">
+        <option value="All">All</option>
+        <option value="Pending">Pending</option>
+        <option value="Processing">Processing</option>
+        <option value="Completed">Completed</option>
+        <option value="Cancelled">Cancelled</option>
+    </select>
+    <button type="submit">Filter</button>
+</form>
+
+<p><a href="/Admin">Back to Dashboard</a></p>
+
+<ul>
+@foreach (var o in Model)
+{
+    <li>
+        Order #@o.OrderNumber - @o.CustomerName - @o.Status - $@o.TotalAmount
+        <a href="/Admin/OrderDetails/@o.OrderId">View Details</a>
+    </li>
+}
+</ul>
